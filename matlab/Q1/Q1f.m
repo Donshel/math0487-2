@@ -1,18 +1,15 @@
 %% Calls
 
-Q1b;
+run('..\scripts\addPath');
+loadWhole;
 
 %% Code
 
-% Setup
-sample = [ whole.sample.(index{2}); whole.sample.(index{3}) ]';
-correlation = zeros(2, 1);
-
 % Compute
-correlation(1) = corr(sample(:, 1), sample(:, 2));
+correlation = corr(dataset.(index{1}), dataset.(index{2}));
 
 % Plot
-scatter(sample(:, 1), sample(:, 2));
+scatter(dataset.(index{1}), dataset.(index{2}));
 
 %% Clear workspace
 

@@ -4,25 +4,23 @@ Q1b;
 
 %% Parameters
 
-f = 'frequency';
-n = 10;
+precision = 1/10;
 
 %% Code
 
-for i = 2:size(index, 1)
+for i = 1:size(index, 1)
     % Compute
-    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]' * n);
-    whole.stats.(index{i}).(f)(:, 1) = whole.stats.(index{i}).(f)(:, 1) / n;
+    tab = frequency(dataset.(index{i}), precision);
 
     % Plot
-    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) '- 1);']);
-    plot(whole.stats.(index{i}).(f)(:, 1), whole.stats.(index{i}).(f)(:, 3));
+    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
+    plot(tab.value, tab.cumulated);
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end
 
-linkaxes([plot2, plot3], 'y');
+linkaxes([plot1, plot2], 'y');
 
 %% Clear workspace
 
-clearvars -except whole index;
+clearvars -except dataset index stats;

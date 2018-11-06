@@ -1,49 +1,38 @@
 %% Calls
 
-Q2bi;
+Q2b;
 
 %% Parameters
 
-f = 'frequency';
-g = 'ks';
+f = 'ks';
 precision = 1/10;
-space = [1, 1] * 0.01;
+space = [0.02, 0.02];
 
 %% Code
 
-for i = 2:size(index, 1)
-    % Compute
-    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]', precision);
+for i = 1:size(index, 1)
+    % Setupe
+    temp = zeros(size(sample_dataset, 1), 1);
 
-    for j = 1:length(sub)
-        sub(j).stats.(index{i}).(f) = frequency([ sub(j).sample.(index{i}) ]', precision);
+    % Compute
+    tab = frequency(dataset.(index{i}), precision);
+
+    for j = 1:size(sample_dataset, 1)
+        sample_tab = frequency(sample_dataset{j}.(index{i}), precision);
 
         % Distance between values represented in both samples
-        x = ismember(whole.stats.(index{i}).(f)(:, 1), sub(j).stats.(index{i}).(f)(:, 1));
-        diff = whole.stats.(index{i}).(f)(x, 3) - sub(j).stats.(index{i}).(f)(:, 3);
+        dom = ismember(tab.value, sample_tab.value);
+        diff = tab.cumulated(dom) - sample_tab.cumulated;
 
-        sub(j).stats.(index{i}).(g) = max(abs(diff));
+        temp(j) = max(abs(diff));
     end
+
+    sample_stats.(index{i}).(f) = temp;
 end
 
-% Setup
-sample = [sub.stats];
-
-for i = 2:size(index, 1)
-    temp = [sample.(index{i})];
-    temp = [temp.(g)]';
-
-    % Compute
-    edges = min(temp):space(i - 1):max(temp);
-
-    % Plot
-    subplot(1, 2, i - 1);
-    histogram(temp, edges);
-    title( strcat(index{i}, {' '}, g, {' '}, 'histogram') );
-    xlabel( strcat(index{i}, {' '}, g) );
-    ylabel('Sub sample number');
-end
+% Plot
+Q2bh;
 
 %% Clear workspace
 
-clearvars -except whole sub index;
+clearvars -except dataset index stats sample_dataset sample_stats;

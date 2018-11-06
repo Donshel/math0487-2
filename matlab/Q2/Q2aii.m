@@ -1,18 +1,18 @@
 %% Calls
 
-Q2a;
+Q2ai;
 
 %% Code
 
-for i = 2:size(index, 1)
+for i = 1:size(index, 1)
     % Plot
-    subplot(2, 1, i - 1);
-    x = [[ whole.sample.(index{i}) ]'; [ sub.sample.(index{i}) ]'];
-    g = [1 * ones(whole.n, 1); 2 * ones(sub.n, 1)];
-    boxplot(x, g, 'Labels', {'Whole sample', 'Sub sample'}, 'Widths', 0.8, 'Whisker', 10);
+    subplot(2, 1, i);
+    x = [dataset.(index{i}); sample_dataset.(index{i})];
+    g = [1 * ones(size(dataset, 1), 1); 2 * ones(size(sample_dataset, 1), 1)];
+    boxplot(x, g, 'Labels', {'Dataset', 'Sample'}, 'Widths', 0.8, 'Whisker', 10);
     ylabel(index{i});
 end
 
 %% Clear workspace
 
-clearvars -except whole sub index;
+clearvars -except dataset index stats sample_dataset;

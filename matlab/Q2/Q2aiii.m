@@ -4,37 +4,36 @@ Q2ai;
 
 %% Parameters
 
-f = 'frequency';
-g = 'ks';
+f = 'ks';
 precision = 1/10;
 
 %% Code
 
-for i = 2:size(index, 1)
+for i = 1:size(index, 1)
     % Compute
-    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]', precision);
-    sub.stats.(index{i}).(f) = frequency([ sub.sample.(index{i}) ]', precision);
+    tab = frequency(dataset.(index{i}), precision);
+    sample_tab = frequency(sample_dataset.(index{i}), precision);
 
     % Distance between values represented in both samples
-    x = ismember(whole.stats.(index{i}).(f)(:, 1), sub.stats.(index{i}).(f)(:, 1));
-    diff = abs( whole.stats.(index{i}).(f)(x, 3) - sub.stats.(index{i}).(f)(:, 3) );
+    dom = ismember(tab.value, sample_tab.value);
+    diff = tab.cumulated(dom) - sample_tab.cumulated;
 
-    sub.stats.(index{i}).(g) = max(abs(diff));
+    sample_stats.(index{i}).(f) = max(abs(diff));
 
     % Plot
-    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) '- 1);']);
-    plot(whole.stats.(index{i}).(f)(:, 1),  whole.stats.(index{i}).(f)(:, 3));
+    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
+    plot(tab.value, tab.cumulated);
     hold on
-         plot(sub.stats.(index{i}).(f)(:, 1), sub.stats.(index{i}).(f)(:, 3));
-         plot(sub.stats.(index{i}).(f)(:, 1), abs(diff));
+         plot(sample_tab.value, sample_tab.cumulated);
+         plot(sample_tab.value, abs(diff));
     hold off
-    legend('Whole sample', 'Sub sample', 'Distance');
+    legend('Dataset', 'Sample', 'Distance');
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end
 
-linkaxes([plot2, plot3], 'y');
+linkaxes([plot1, plot2], 'y');
 
 %% Clear workspace
 
-clearvars -except whole sub index;
+clearvars -except dataset index stats sample_dataset sample_stats;

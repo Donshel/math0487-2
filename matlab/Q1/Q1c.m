@@ -4,32 +4,29 @@ Q1b;
 
 %% Parameters
 
-f = 'normal';
+f = 'normed';
+g = 'prop';
 
 %% Code
 
 % Setup
 
-isNormed = whole.sample;
-pNormed = zeros(size(index, 1) - 1, 1);
+isNormed = dataset;
 
 % Compute
-for i = 2:size(index, 1)
-    whole.stats.(index{i}).(f) = zeros(2, 1);
-    whole.stats.(index{i}).(f)(1) = whole.stats.(index{i}).mean - whole.stats.(index{i}).std;
-    whole.stats.(index{i}).(f)(end) = whole.stats.(index{i}).mean + whole.stats.(index{i}).std;
+for i = 1:size(index, 1)
+    stats.(index{i}).(f) = zeros(1, 2);
+    stats.(index{i}).(f)(1) = stats.(index{i}).mean - stats.(index{i}).std;
+    stats.(index{i}).(f)(end) = stats.(index{i}).mean + stats.(index{i}).std;
 
-    for j = 1:whole.n
-        isNormed(j).(index{i}) = isIn(isNormed(j).(index{i}), whole.stats.(index{i}).(f));
-    end
-
-    pNormed(i - 1) = sum([ isNormed.(index{i}) ]', 1) / whole.n;
+    isNormed.(index{i}) = isIn(isNormed.(index{i}), stats.(index{i}).(f));
+    stats.(index{i}).(g) = sum(isNormed.(index{i}), 1) / size(dataset, 1);
 end
 
 % Belgium
-iBelgium = find(strcmp({ whole.sample.(index{1}) }', 'Belgium'));
-isBelgium = isNormed(iBelgium);
+iBelgium = find(strcmp(dataset.Properties.RowNames, 'Belgium'));
+isBelgium = isNormed(iBelgium, :);
 
 %% Clear workspace
 
-clearvars -except whole index isNormed pNormed iBelgium isBelgium;
+clearvars -except dataset index stats isNormed iBelgium isBelgium;

@@ -5,25 +5,21 @@ loadWhole;
 
 %% Parameters
 
-f = {'mean'; 'median'; 'mode'; 'var'; 'std'};
+f = {'mean'; 'median'; 'mode'; 'std'};
 
 %% Code
 
 % Setup
-whole.stats = struct;
-tab = struct;
+stats = struct;
 
 % Compute
-for i = 2:size(index, 1)
-    whole.stats.(index{i}) = struct;
+for i = 1:size(index, 1)
+    stats.(index{i}) = table;
     for j = 1:size(f, 1)
-        whole.stats.(index{i}).(f{j}) = feval(f{j}, [ whole.sample.(index{i}) ]');
+        stats.(index{i}).(f{j}) = feval(f{j}, dataset.(index{i}));
     end
-    
-    % Displayable at tab.whole.(index{i})
-    tab.whole.(index{i}) = struct2table(whole.stats.(index{i}));
 end
 
 %% Clear workspace
 
-clearvars -except whole index tab;
+clearvars -except dataset index stats;
