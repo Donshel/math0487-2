@@ -1,10 +1,11 @@
-function out = frequency(in)
+function out = frequency(in, precision)
     % Error
     if size(in, 2) ~= 1 || size(size(in), 2) > 2
         error('Wrong input dimension.');
     end
 
     % Boundary
+    in = in / precision;
     e = round([min(in); max(in)]);
     if e(1) > 0
         e(1) = 0;
@@ -23,5 +24,5 @@ function out = frequency(in)
     freq = freq(logical(freq)) / size(in, 1);
 
     % return
-    out = [val, freq, cumsum(freq)];
+    out = [val * precision, freq, cumsum(freq)];
 end

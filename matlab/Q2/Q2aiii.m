@@ -6,24 +6,21 @@ Q2ai;
 
 f = 'frequency';
 g = 'ks';
-p = 10;
+precision = 1/10;
 
 %% Code
 
 for i = 2:size(index, 1)
     % Compute
-    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]' * p);
-    sub.stats.(index{i}).(f) = frequency([ sub.sample.(index{i}) ]' * p);
-    
-    whole.stats.(index{i}).(f)(:, 1) = whole.stats.(index{i}).(f)(:, 1) / p;
-    sub.stats.(index{i}).(f)(:, 1) = sub.stats.(index{i}).(f)(:, 1) / p;
-    
+    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]', precision);
+    sub.stats.(index{i}).(f) = frequency([ sub.sample.(index{i}) ]', precision);
+
     % Distance between values represented in both samples
     x = ismember(whole.stats.(index{i}).(f)(:, 1), sub.stats.(index{i}).(f)(:, 1));
     diff = abs( whole.stats.(index{i}).(f)(x, 3) - sub.stats.(index{i}).(f)(:, 3) );
-    
+
     sub.stats.(index{i}).(g) = max(abs(diff));
-    
+
     % Plot
     eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) '- 1);']);
     plot(whole.stats.(index{i}).(f)(:, 1),  whole.stats.(index{i}).(f)(:, 3));

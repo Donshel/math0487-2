@@ -6,19 +6,17 @@ Q2bi;
 
 f = 'frequency';
 g = 'ks';
-p = 10;
+precision = 1/10;
 space = [1, 1] * 0.01;
 
 %% Code
 
 for i = 2:size(index, 1)
     % Compute
-    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]' * p);
-    whole.stats.(index{i}).(f)(:, 1) = whole.stats.(index{i}).(f)(:, 1) / p;
-    
+    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]', precision);
+
     for j = 1:length(sub)
-        sub(j).stats.(index{i}).(f) = frequency([ sub(j).sample.(index{i}) ]' * p);
-        sub(j).stats.(index{i}).(f)(:, 1) = sub(j).stats.(index{i}).(f)(:, 1) / p;
+        sub(j).stats.(index{i}).(f) = frequency([ sub(j).sample.(index{i}) ]', precision);
 
         % Distance between values represented in both samples
         x = ismember(whole.stats.(index{i}).(f)(:, 1), sub(j).stats.(index{i}).(f)(:, 1));
@@ -34,7 +32,7 @@ sample = [sub.stats];
 for i = 2:size(index, 1)
     temp = [sample.(index{i})];
     temp = [temp.(g)]';
-    
+
     % Compute
     edges = min(temp):space(i - 1):max(temp);
 
