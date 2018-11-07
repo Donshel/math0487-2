@@ -10,11 +10,11 @@ precision = 1/10;
 
 for i = 1:size(index, 1)
     % Compute
-    tab = frequency(dataset.(index{i}), precision);
+    freq = frequency(dataset.(index{i}), precision);
 
     % Plot
     eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
-    plot(tab.value, tab.cumulated);
+    plot(freq.value, freq.cumulated);
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end

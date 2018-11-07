@@ -1,7 +1,7 @@
 %% Calls
 
 run('..\scripts\addPath');
-loadWhole;
+loadData;
 
 %% Code
 

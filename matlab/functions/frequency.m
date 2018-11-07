@@ -24,8 +24,5 @@ function out = frequency(in, precision)
     freq = freq(logical(freq)) / size(in, 1);
 
     % return
-    out = table;
-    out.value = val * precision;
-    out.frequency = freq;
-    out.cumulated = cumsum(freq);
+    out = [val * precision, cumsum(freq), freq];
 end

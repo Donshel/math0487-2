@@ -4,27 +4,23 @@ Q2b;
 
 %% Parameters
 
-f = 'ks';
+f = 'ksdistance';
 precision = 1/10;
 space = [0.02, 0.02];
 
 %% Code
 
 for i = 1:size(index, 1)
-    % Setupe
+    % Setup
     temp = zeros(size(sample_dataset, 1), 1);
 
     % Compute
-    tab = frequency(dataset.(index{i}), precision);
+    dataset_frequency = frequency(dataset.(index{i}), precision);
 
     for j = 1:size(sample_dataset, 1)
-        sample_tab = frequency(sample_dataset{j}.(index{i}), precision);
+        sample_frequency = frequency(sample_dataset{j}.(index{i}), precision);
 
-        % Distance between values represented in both samples
-        dom = ismember(tab.value, sample_tab.value);
-        diff = tab.cumulated(dom) - sample_tab.cumulated;
-
-        temp(j) = max(abs(diff));
+        temp(j) = feval(f, sample_frequency(:, 1:2), dataset_frequency(:, 1:2));
     end
 
     sample_stats.(index{i}).(f) = temp;

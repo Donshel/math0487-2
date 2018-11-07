@@ -4,30 +4,25 @@ Q2ai;
 
 %% Parameters
 
-f = 'ks';
 precision = 1/10;
+f = 'ksdistance';
 
 %% Code
 
 for i = 1:size(index, 1)
     % Compute
-    tab = frequency(dataset.(index{i}), precision);
-    sample_tab = frequency(sample_dataset.(index{i}), precision);
-
-    % Distance between values represented in both samples
-    dom = ismember(tab.value, sample_tab.value);
-    diff = tab.cumulated(dom) - sample_tab.cumulated;
-
-    sample_stats.(index{i}).(f) = max(abs(diff));
+    dataset_frequency = frequency(dataset.(index{i}), precision);
+    sample_frequency = frequency(sample_dataset.(index{i}), precision);
+    
+    sample_stats.(index{i}).(f) = feval(f, sample_frequency(:, 1:2), dataset_frequency(:, 1:2));
 
     % Plot
     eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
-    plot(tab.value, tab.cumulated);
+    plot(dataset_frequency(:, 1), dataset_frequency(:, 2));
     hold on
-         plot(sample_tab.value, sample_tab.cumulated);
-         plot(sample_tab.value, abs(diff));
+         plot(sample_frequency(:, 1), sample_frequency(:, 2));
     hold off
-    legend('Dataset', 'Sample', 'Distance');
+    legend('Dataset', 'Sample');
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end

@@ -15,9 +15,7 @@ isNormed = dataset;
 
 % Compute
 for i = 1:size(index, 1)
-    stats.(index{i}).(f) = zeros(1, 2);
-    stats.(index{i}).(f)(1) = stats.(index{i}).mean - stats.(index{i}).std;
-    stats.(index{i}).(f)(end) = stats.(index{i}).mean + stats.(index{i}).std;
+    stats.(index{i}).(f) = [-1, 1] * stats.(index{i}).std + stats.(index{i}).mean;
 
     isNormed.(index{i}) = isIn(isNormed.(index{i}), stats.(index{i}).(f));
     stats.(index{i}).(g) = sum(isNormed.(index{i}), 1) / size(dataset, 1);

@@ -1,7 +1,7 @@
 %% Calls
 
 run('..\scripts\addPath');
-loadWhole;
+loadData;
 
 %% Code
 
@@ -13,4 +13,4 @@ scatter(dataset.(index{1}), dataset.(index{2}));
 
 %% Clear workspace
 
-clearvars -except whole index correlation;
+clearvars -except dataset index correlation;
