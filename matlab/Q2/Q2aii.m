@@ -1,18 +1,25 @@
+%% Parameters
+
+n = 20;
+m = 1;
+f = {'mean'; 'median'; 'std'};
+
 %% Calls
 
-Q2ai;
+run('..\scripts\addPath');
+loadData;
+pickSamples; sample = sample{1};
 
-%% Code
+%% Plot
 
 for i = 1:size(index, 1)
-    % Plot
     subplot(2, 1, i);
-    x = [dataset.(index{i}); sample_dataset.(index{i})];
-    g = [1 * ones(size(dataset, 1), 1); 2 * ones(size(sample_dataset, 1), 1)];
-    boxplot(x, g, 'Labels', {'Dataset', 'Sample'}, 'Widths', 0.8, 'Whisker', 10);
+    x = [dataset.(index{i}); sample.(index{i})];
+    g = [1 * ones(size(dataset, 1), 1); 2 * ones(size(sample, 1), 1)];
+    boxplot(x, g, 'Labels', fieldnames(stats), 'Widths', 0.8, 'Whisker', 10);
     ylabel(index{i});
 end
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample_dataset;
+clearvars -except dataset index stats sample;

@@ -1,30 +1,45 @@
-%% Calls
-
-Q1b;
-
 %% Parameters
 
-f = 'normed';
-g = 'prop';
+f = {'mean'; 'std'};
+g = 'normed';
+h = 'prop';
+country = 'Belgium';
 
-%% Code
+%% Calls
+
+run('..\scripts\addPath');
+loadData;
+
+%% Compute
 
 % Setup
-
 isNormed = dataset;
 
 % Compute
 for i = 1:size(index, 1)
-    stats.(index{i}).(f) = [-1, 1] * stats.(index{i}).std + stats.(index{i}).mean;
+    stats.dataset.(index{i}).(g) = [-1, 1] * stats.dataset.(index{i}).std + stats.dataset.(index{i}).mean;
 
-    isNormed.(index{i}) = isIn(isNormed.(index{i}), stats.(index{i}).(f));
-    stats.(index{i}).(g) = sum(isNormed.(index{i}), 1) / size(dataset, 1);
+    isNormed.(index{i}) = isIn(isNormed.(index{i}), stats.dataset.(index{i}).(g));
+    stats.dataset.(index{i}).(h) = sum(isNormed.(index{i}), 1) / size(dataset, 1);
 end
 
-% Belgium
-iBelgium = find(strcmp(dataset.Properties.RowNames, 'Belgium'));
-isBelgium = isNormed(iBelgium, :);
+% Search
+iCountry = find(strcmp(dataset.Properties.RowNames, country));
+isCountry = isNormed(iCountry, :);
+
+%% Display
+
+% Setup
+tab = stats.dataset.(index{1})(:, h);
+for i = 2:size(index, 1)
+	tab = [tab; stats.dataset.(index{i})(:, h)];
+end
+tab.Properties.RowNames = index;
+
+% Display
+disp(tab);
+disp(isCountry);
 
 %% Clear workspace
 
-clearvars -except dataset index stats isNormed iBelgium isBelgium;
+clearvars -except dataset index stats isNormed isCountry tab;

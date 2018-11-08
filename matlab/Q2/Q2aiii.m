@@ -1,34 +1,60 @@
-%% Calls
-
-Q2ai;
-
 %% Parameters
 
+n = 20;
+m = 1;
+f = {};
+g = 'ksdistance';
 precision = 1/10;
-f = 'ksdistance';
 
-%% Code
+%% Calls
+
+run('..\scripts\addPath');
+loadData;
+pickSamples; sample = sample{1};
+
+%% Compute
+
+% Setup
+freq = struct;
+freq.dataset = struct;
+freq.sample = struct;
+
+% Compute
+for i = 1:size(index, 1)
+    freq.dataset.(index{i}) = frequency(dataset.(index{i}), precision);
+    freq.sample.(index{i}) = frequency(sample.(index{i}), precision);
+
+    temp = feval(g, freq.sample.(index{i})(:, 1:2), freq.dataset.(index{i})(:, 1:2));
+    stats.sample.(index{i}).(g) = temp;
+end
+
+%% Plot
 
 for i = 1:size(index, 1)
-    % Compute
-    dataset_frequency = frequency(dataset.(index{i}), precision);
-    sample_frequency = frequency(sample_dataset.(index{i}), precision);
-    
-    sample_stats.(index{i}).(f) = feval(f, sample_frequency(:, 1:2), dataset_frequency(:, 1:2));
-
-    % Plot
     eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
-    plot(dataset_frequency(:, 1), dataset_frequency(:, 2));
+    plot(freq.dataset.(index{i})(:, 1), freq.dataset.(index{i})(:, 2));
     hold on
-         plot(sample_frequency(:, 1), sample_frequency(:, 2));
+         plot(freq.sample.(index{i})(:, 1), freq.sample.(index{i})(:, 2));
     hold off
-    legend('Dataset', 'Sample');
+    legend(fieldnames(stats));
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end
 
 linkaxes([plot1, plot2], 'y');
 
+%% Display
+
+% Setup
+tab = stats.sample.(index{1});
+for i = 2:size(index, 1)
+    tab = [tab; stats.sample.(index{i})];   
+end
+tab.Properties.RowNames = index;
+
+% Display
+disp(tab);
+
 %% Clear workspace
 
-clearvars -except dataset index stats sample_dataset sample_stats;
+clearvars -except dataset index stats sample freq tab;

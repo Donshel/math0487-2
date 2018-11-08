@@ -3,12 +3,11 @@
 run('..\scripts\addPath');
 loadData;
 
-%% Code
+%% Plot
 
 for i = 1:size(index, 1)
-    % Plot
     subplot(1, 2, i);
-    boxplot(dataset.(index{i}), 'Labels', 'Whole sample', 'Widths', 0.8, 'Whisker', 10);
+    boxplot(dataset.(index{i}), 'Labels', fieldnames(stats), 'Widths', 0.8, 'Whisker', 10);
     ylabel(index{i});
 end
 

@@ -3,12 +3,16 @@
 run('..\scripts\addPath');
 loadData;
 
-%% Code
+%% Compute
 
-% Compute
 correlation = corr(dataset.(index{1}), dataset.(index{2}));
 
-% Plot
+%% Display
+
+disp(correlation);
+
+%% Plot
+
 scatter(dataset.(index{1}), dataset.(index{2}));
 
 %% Clear workspace

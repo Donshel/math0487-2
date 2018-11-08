@@ -1,16 +1,16 @@
+%% Parameters
+
+space = [1, 0.5];
+
 %% Calls
 
 run('..\scripts\addPath');
 loadData;
 
-%% Parameters
-
-space = [1, 0.5];
-
-%% Code
+%% Plot
 
 for i = 1:size(index, 1)
-    % Compute
+    % Setup
     xmin = min(dataset.(index{i}));
     xmax = max(dataset.(index{i}));
     dom = floor(xmin):space(i):ceil(xmax);
@@ -20,7 +20,7 @@ for i = 1:size(index, 1)
     histogram(dataset.(index{i}), dom);
     title(strcat(index{i}, {' '}, 'histogram'));
     xlabel(index{i});
-    ylabel(strcat(index{1}, {' '}, 'number'));
+    ylabel(strcat('Country number'));
 end
 
 %% Clear workspace
