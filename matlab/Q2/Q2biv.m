@@ -9,7 +9,7 @@ space = [0.02, 0.02];
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 pickSamples;
 

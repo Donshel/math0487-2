@@ -1,6 +1,6 @@
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 
 %% Compute

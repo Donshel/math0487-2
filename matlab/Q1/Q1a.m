@@ -4,7 +4,7 @@ space = [1, 0.5];
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 
 %% Plot

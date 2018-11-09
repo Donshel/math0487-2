@@ -1,2 +1,2 @@
-addpath('..\scripts\');
-addpath('..\functions\');
+addpath('../scripts/');
+addpath('../functions/');

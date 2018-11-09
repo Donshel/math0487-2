@@ -10,7 +10,7 @@ space = [0.5, 0.25]; % i) [0.5, 0.25], ii) [0.5, 0.25], iii) [0.5, 0.25]
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 pickSamples;
 

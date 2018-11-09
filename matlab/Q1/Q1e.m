@@ -4,7 +4,7 @@ precision = 1/10;
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 
 %% Compute

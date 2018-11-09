@@ -6,7 +6,7 @@ f = {'mean'; 'median'; 'std'};
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 pickSamples; sample = sample{1};
 

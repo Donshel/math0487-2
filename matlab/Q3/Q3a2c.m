@@ -9,7 +9,7 @@ global real;
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 pickSamples;
 

@@ -4,7 +4,7 @@ f = {'mean'; 'median'; 'mode'; 'std'};
 
 %% Calls
 
-run('..\scripts\addPath');
+run('../scripts/addPath');
 loadData;
 
 %% Display
