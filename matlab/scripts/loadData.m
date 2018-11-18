@@ -9,7 +9,7 @@ if exist('f', 'var') == 1
     for i = 1:size(index, 1)
         stats.dataset.(index{i}) = table;
         for j = 1:size(f, 1)
-            stats.dataset.(index{i}).(f{j}) = feval(f{j}, dataset.(index{i}));
+            stats.dataset.(index{i}).(f{j, 1}) = feval(f{j, 2}, dataset.(index{i}), f{j, 3}{:});
         end
     end
 end

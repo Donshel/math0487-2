@@ -1,18 +1,22 @@
 %% Parameters
 
-f = {'mean'; 'median'; 'mode'; 'std'};
+f = {
+    'mean', 'mean', {};
+    'median', 'median', {};
+    'mode', 'mode', {};
+    'std', 'std', {1}
+};
 
 %% Calls
 
-run('../scripts/addPath');
 loadData;
 
 %% Display
 
 % Setup
-tab = stats.dataset.(index{1});
-for i = 2:size(index, 1)
-	tab = [tab; stats.dataset.(index{i})];
+tab = table;
+for i = 1:size(index, 1)
+	tab(end + 1, :) = stats.dataset.(index{i});
 end
 tab.Properties.RowNames = index;
 

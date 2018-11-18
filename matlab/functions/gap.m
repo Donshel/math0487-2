@@ -1,5 +1,4 @@
-function y = gap(x)
-    global real;
-    y = mean(x) - real;
+function y = gap(x, mu)
+    y = mean(x) - mu;
 end
 

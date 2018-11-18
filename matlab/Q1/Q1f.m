@@ -1,6 +1,5 @@
 %% Calls
 
-run('../scripts/addPath');
 loadData;
 
 %% Compute
@@ -14,6 +13,7 @@ disp(correlation);
 %% Plot
 
 scatter(dataset.(index{1}), dataset.(index{2}));
+daspect([1 1 1]);
 
 %% Clear workspace
 

@@ -2,53 +2,50 @@
 
 n = 20;
 m = 100;
-f = {'mean'; 'std'};
-g = {'student'; 'normal'};
+f = {
+    'mean', 'mean', {};
+    'std', 'std', {1};
+    'std_corr', 'std', {0}
+};
+g = {
+    'student', 'T', {10};
+    'normal', 'Normal', {0, 1}
+};
 p = 0.95;
-nu = 10;
 
 %% Calls
 
-run('../scripts/addPath');
 loadData;
 pickSamples;
 
 %% Compute
 
 % Setup
-alpha = (1 - p) / 2;
-cfd = struct;
-tab1 = struct;
-prop = struct;
-
-% Compute
-cfd.(g{1}) = [1, -1] * tinv(alpha, nu); % i) nu -> Inf : tinv -> norminv
-cfd.(g{2}) = [1, -1] * norminv(alpha); % ii
+alpha = 1 - p;
+tab = struct;
 
 for i = 1:size(index, 1)
-    tab1.(index{i}) = struct;
+    tab.(index{i}) = table;
+
+    % Compute
+    temp = zeros(size(g, 1), 1);
     for j = 1:size(g, 1)
-        tab1.(index{i}).(g{j}) = table;
-        temp = cfd.(g{j}) .* stats.sample.(index{i}).std * size(sample{1}, 1)^(-1/2);
-        tab1.(index{i}).(g{j}).cfd = temp + stats.sample.(index{i}).mean;
-        tab1.(index{i}).(g{j}).has = hasIn(stats.dataset.(index{i}).mean, tab1.(index{i}).(g{j}).cfd);
-        prop.(g{j}) = sum(tab1.(index{i}).(g{j}).has) / size(tab1.(index{i}).(g{j}).has, 1);
+        interval = [-1, 1] * icdf(g{j, 2}, 1 - alpha / 2, g{j, 3}{:});
+        interval = interval .* stats.sample.(index{i}).std_corr * n^(-1/2);
+        interval = interval + stats.sample.(index{i}).mean;
+        temp(j) = sum(hasIn(stats.dataset.(index{i}).mean, interval)) / m;
     end
+    tab.(index{i}).proportion = temp;
+    tab.(index{i}).Properties.RowNames = g(:, 1);
 end
 
 %% Display
 
-% Setup
-tab2 = prop.(g{1});
-for i = 2:size(g, 1)
-	tab2 = [tab2; prop.(g{i})];
+for i = 1:size(index, 1)
+    disp([index{i} ' :']);
+    disp(tab.(index{i}));
 end
-tab2.Properties.RowNames = g;
-
-% Display
-
-disp(tab2);
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample tab1 prop;
+clearvars -except dataset index stats sample tab;

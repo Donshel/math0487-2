@@ -2,40 +2,35 @@
 
 n = 20;
 m = 500;
-f = {'mean'; 'median'; 'std'};
-g = 'ksdistance';
-precision = 1/10;
+f = {};
+g = {'ksdist', 'ks2stat', {}};
 space = [0.02, 0.02];
 
 %% Calls
 
-run('../scripts/addPath');
 loadData;
 pickSamples;
 
-%% Code
+%% Compute
 
 % Setup
-freq = struct;
-freq.dataset = struct;
-freq.sample = struct;
+k = size(f, 1) + 1;
+f(k, :) = g(:);
 
 % Compute
 for i = 1:size(index, 1)
-    freq.dataset.(index{i}) = frequency(dataset.(index{i}), precision);
-
     temp = zeros(size(sample, 1), 1);
+    f{k, 3} = {dataset.(index{i})};
     for j = 1:size(sample, 1)
-        freq.sample(j).(index{i}) = frequency(sample{j}.(index{i}), precision);
-        temp(j) = feval(g, freq.sample(j).(index{i})(:, 1:2), freq.dataset.(index{i})(:, 1:2));
+        temp(j) = feval(f{k, 2}, sample{j}.(index{i}), f{k, 3}{:});
     end
-    stats.sample.(index{i}).(g) = temp;
+    stats.sample.(index{i}).(f{k, 1}) = temp;
 end
 
 %% Plot
 
-Q2bPlot;
+Q2bhist;
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample freq;
+clearvars -except dataset index stats sample;

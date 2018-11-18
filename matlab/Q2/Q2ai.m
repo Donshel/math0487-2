@@ -2,26 +2,28 @@
 
 n = 20;
 m = 1;
-f = {'mean'; 'median'; 'std'};
+f = {
+    'mean', 'mean', {};
+    'median', 'median', {};
+    'std', 'std', {1}
+};
 
 %% Calls
 
-run('../scripts/addPath');
 loadData;
 pickSamples; sample = sample{1};
 
 %% Display
 
 % Setup
-tab = struct;
+tab = table;
 for i = 1:size(index, 1)
-    tab.(index{i}) = [stats.dataset.(index{i}); stats.sample.(index{i})];
-    tab.(index{i}).Properties.RowNames = fieldnames(stats);
-    
-    % Display
-    disp([index{i} ' :']);
-    disp(tab.(index{i}));
+    tab(end + 1, :) = stats.sample.(index{i});
 end
+tab.Properties.RowNames = index;
+
+% Display
+disp(tab);
 
 %% Clear workspace
 
