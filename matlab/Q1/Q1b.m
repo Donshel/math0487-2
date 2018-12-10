@@ -1,5 +1,6 @@
 %% Calls
 
+run('..\scripts\addPath');
 loadData;
 
 %% Code
@@ -10,7 +11,7 @@ s = struct;
 
 % Compute
 for i = 2:l
-    s(i - 1).('data') = index{i};
+    s(i - 1).data = index{i};
     for j = 1:size(f, 1)
         s(i - 1).(f{j}) = feval(f{j}, [data(:).(index{i})]');
     end

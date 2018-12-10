@@ -1,0 +1,2 @@
+addpath('..\scripts\');
+addpath('..\functions\');

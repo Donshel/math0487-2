@@ -1,5 +1,6 @@
 %% Calls
 
+run('..\scripts\addPath');
 loadData;
 
 %% Parameters
