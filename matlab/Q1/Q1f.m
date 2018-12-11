@@ -5,15 +5,15 @@ Q1b;
 %% Code
 
 % Setup
-val = [data(:).(index{2}); data(:).(index{3})]';
+sample = [ whole.sample.(index{2}); whole.sample.(index{3}) ]';
+correlation = zeros(2, 1);
 
 % Compute
-corr1 = corr(val(:, 1), val(:, 2));
-corr2 = (mean(val(:, 1) .* val(:, 2)) - s(1).mean * s(2).mean) / (s(1).std * s(2).std);
+correlation(1) = corr(sample(:, 1), sample(:, 2));
 
 % Plot
-scatter(val(:, 1),val(:, 2));
+scatter(sample(:, 1), sample(:, 2));
 
 %% Clear workspace
 
-clearvars -except data index l h s corr1 corr2;
+clearvars -except whole index correlation;

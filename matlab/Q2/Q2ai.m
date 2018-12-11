@@ -1,27 +1,27 @@
 %% Calls
 
-run('..\Q1\Q1b');
+Q2a;
 
 %% Parameters
 
-n = 20;
+f = {'mean'; 'median'; 'mode'; 'var'; 'std'};
 
 %% Code
 
 % Setup
-f = {'mean'; 'median'; 'mode'; 'var'; 'std'};
-data_sub = data(randi([1 h], n, 1));
-s_sub = struct;
+sub.stats = struct;
 
 % Compute
-for i = 2:l
-    s_sub(i - 1).data = index{i};
+for i = 2:size(index, 1)
+    sub.stats.(index{i}) = struct;
     for j = 1:size(f, 1)
-        s_sub(i - 1).(f{j}) = feval(f{j}, [data_sub(:).(index{i})]');
+        sub.stats.(index{i}).(f{j}) = feval(f{j}, [ sub.sample.(index{i}) ]');
     end
+    
+    % Displayable at tab.sub.(index{i})
+    tab.sub.(index{i}) = struct2table(sub.stats.(index{i}));
 end
-tab_sub = struct2table(s_sub);
 
 %% Clear workspace
 
-clearvars -except data data_sub index l h s s_sub tab tab_sub;
+clearvars -except whole sub index tab;

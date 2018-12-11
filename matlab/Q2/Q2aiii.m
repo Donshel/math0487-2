@@ -4,40 +4,40 @@ Q2ai;
 
 %% Parameters
 
-n = 10;
+f = 'frequency';
+g = 'ks';
+p = 10;
 
 %% Code
 
-for i = 2:l
-    % Setup
-    val = [data(:).(index{i})]' * n;
-    val_sub = [data_sub(:).(index{i})]' * n;
-    
+for i = 2:size(index, 1)
     % Compute
-    s(i - 1).frequency = frequency(val);
-    s_sub(i - 1).frequency = frequency(val_sub);
+    whole.stats.(index{i}).(f) = frequency([ whole.sample.(index{i}) ]' * p);
+    sub.stats.(index{i}).(f) = frequency([ sub.sample.(index{i}) ]' * p);
     
-    s(i - 1).frequency(:, 1) = s(i - 1).frequency(:, 1) / n;
-    s_sub(i - 1).frequency(:, 1) = s_sub(i - 1).frequency(:, 1) / n;
+    whole.stats.(index{i}).(f)(:, 1) = whole.stats.(index{i}).(f)(:, 1) / p;
+    sub.stats.(index{i}).(f)(:, 1) = sub.stats.(index{i}).(f)(:, 1) / p;
     
-    x = ismember(s(i - 1).frequency(:, 1), s_sub(i - 1).frequency(:, 1));
-    distance = abs(s(i - 1).frequency(x, 3) - s_sub(i - 1).frequency(:, 3));
+    % Distance between values represented in both samples
+    x = ismember(whole.stats.(index{i}).(f)(:, 1), sub.stats.(index{i}).(f)(:, 1));
+    diff = abs( whole.stats.(index{i}).(f)(x, 3) - sub.stats.(index{i}).(f)(:, 3) );
     
-    [ks, ind] = max(distance);
-    s_sub(i - 1).ks = [s_sub(i - 1).frequency(ind,1), ks];
+    sub.stats.(index{i}).(g) = max(abs(diff));
     
     % Plot
-    subplot(2,1,i - 1);
-    plot(s(i - 1).frequency(:,1), s(i - 1).frequency(:,3));
+    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) '- 1);']);
+    plot(whole.stats.(index{i}).(f)(:, 1),  whole.stats.(index{i}).(f)(:, 3));
     hold on
-         plot(s_sub(i - 1).frequency(:,1), s_sub(i - 1).frequency(:,3));
-         plot(s_sub(i - 1).frequency(:,1), distance);
+         plot(sub.stats.(index{i}).(f)(:, 1), sub.stats.(index{i}).(f)(:, 3));
+         plot(sub.stats.(index{i}).(f)(:, 1), abs(diff));
     hold off
-    legend('Population', 'Sample', 'Distance');
+    legend('Whole sample', 'Sub sample', 'Distance');
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end
 
+linkaxes([plot2, plot3], 'y');
+
 %% Clear workspace
 
-clearvars -except data data_sub index l h s s_sub;
+clearvars -except whole sub index;

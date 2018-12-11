@@ -1,21 +1,18 @@
 %% Calls
 
-run('..\Q1\Q1d');
+Q2a;
 
 %% Code
 
-% Setup
-data_sub = data(randi([1 h], n, 1));
-
-for i = 2:l
+for i = 2:size(index, 1)
     % Plot
-    subplot(2,1,i - 1);
-    x = [ [data(:).(index{i})]' ; [data_sub(:).(index{i})]' ];
-    g = [1 * ones(h, 1); 2 * ones(n, 1)];
-    boxplot(x, g, 'Labels', {'Population', 'Sample'}, 'Widths', 0.8, 'Whisker', 10);
+    subplot(2, 1, i - 1);
+    x = [[ whole.sample.(index{i}) ]'; [ sub.sample.(index{i}) ]'];
+    g = [1 * ones(whole.n, 1); 2 * ones(sub.n, 1)];
+    boxplot(x, g, 'Labels', {'Whole sample', 'Sub sample'}, 'Widths', 0.8, 'Whisker', 10);
     ylabel(index{i});
 end
 
 %% Clear workspace
 
-clearvars -except data data_sub index l h;
+clearvars -except whole sub index;

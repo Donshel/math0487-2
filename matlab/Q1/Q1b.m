@@ -1,23 +1,29 @@
 %% Calls
 
 run('..\scripts\addPath');
-loadData;
+loadWhole;
+
+%% Parameters
+
+f = {'mean'; 'median'; 'mode'; 'var'; 'std'};
 
 %% Code
 
 % Setup
-f = {'mean'; 'median'; 'mode'; 'var'; 'std'};
-s = struct;
+whole.stats = struct;
+tab = struct;
 
 % Compute
-for i = 2:l
-    s(i - 1).data = index{i};
+for i = 2:size(index, 1)
+    whole.stats.(index{i}) = struct;
     for j = 1:size(f, 1)
-        s(i - 1).(f{j}) = feval(f{j}, [data(:).(index{i})]');
+        whole.stats.(index{i}).(f{j}) = feval(f{j}, [ whole.sample.(index{i}) ]');
     end
+    
+    % Displayable at tab.whole.(index{i})
+    tab.whole.(index{i}) = struct2table(whole.stats.(index{i}));
 end
-tab = struct2table(s);
 
 %% Clear workspace
 
-clearvars -except data index l h s tab;
+clearvars -except whole index tab;
