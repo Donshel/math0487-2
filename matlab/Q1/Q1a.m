@@ -9,16 +9,16 @@ loadData;
 %% Plot
 
 for i = 1:size(index, 1)
-    % Setup
+    % Setup nice edges
     temp = min(dataset.(index{i}));
     xmin = temp - mod(temp, space(i));
     temp = max(dataset.(index{i}));
     xmax = temp - mod(temp, space(i)) + space(i);
-    dom = xmin:space(i):xmax;
+    edges = xmin:space(i):xmax;
 
     % Plot
     subplot(1, 2, i);
-    histogram(dataset.(index{i}), dom);
+    histogram(dataset.(index{i}), edges);
     xlabel(index{i});
     ylabel(strcat('Country number'));
 end

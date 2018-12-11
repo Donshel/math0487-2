@@ -1,7 +1,7 @@
 %% Parameters
 
 n = 20;
-m = 1;
+m = 3;
 f = {
     'mean', 'mean', {};
     'median', 'median', {};
@@ -11,24 +11,29 @@ f = {
 %% Calls
 
 loadData;
-pickSamples; sample = sample{1};
+pickSamples;
 
 %% Plot
 
 for i = 1:size(index, 1)
+    % Setup
+    a = [dataset.(index{i})];
+    b = zeros(size(dataset, 1), 1);
+    
+    names = fieldnames(stats);
+    labels = {names{1}};
+    for j = 1:m
+        a = [a; sample{j}.(index{i});];
+        b = [b; j * ones(n, 1) ];
+        labels{end + 1, 1} = [names{2}, ' ', num2str(j)];
+    end
+    
+    % Plot
     subplot(1, 2, i);
-    a = [
-        dataset.(index{i});
-        sample.(index{i})
-    ];
-    b = [
-        1 * ones(size(dataset, 1), 1);
-        2 * ones(size(sample, 1), 1)
-    ];
-    boxplot(a, b, 'Labels', fieldnames(stats), 'Widths', 0.8, 'Whisker', 10);
+    boxplot(a, b, 'Labels', labels, 'Widths', 0.8);
     ylabel(index{i});
 end
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample;
+clearvars -except dataset index stats;

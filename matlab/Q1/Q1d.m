@@ -14,7 +14,7 @@ loadData;
 
 for i = 1:size(index, 1)
     subplot(1, 2, i);
-    boxplot(dataset.(index{i}), 'Labels', 'dataset', 'Widths', 0.8, 'Whisker', 10);
+    boxplot(dataset.(index{i}), 'Labels', 'dataset', 'Widths', 0.8);
     ylabel(index{i});
 end
 
@@ -32,4 +32,4 @@ disp(tab);
 
 %% Clear workspace
 
-clearvars -except dataset index;
+clearvars -except dataset index stats;

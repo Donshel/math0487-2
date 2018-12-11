@@ -14,22 +14,20 @@ loadData;
 
 % Setup
 isNormed = table;
+iCountry = find(strcmp(dataset.Properties.RowNames, country)); % search country
 
-% Compute
+% Compute interval
 for i = 1:size(index, 1)
-    % Interval determination
     temp = [-1, 1] * stats.dataset.(index{i}).std;
     stats.dataset.(index{i}).interval = temp + stats.dataset.(index{i}).mean;
+end
 
-    % Proportion computation
+% Compute proportion
+for i = 1:size(index, 1)
     isNormed.(index{i}) = isIn(dataset.(index{i}), stats.dataset.(index{i}).interval);
     stats.dataset.(index{i}).proportion = sum(isNormed.(index{i}), 1) / size(dataset, 1);
 end
 isNormed.Properties.RowNames = dataset.Properties.RowNames;
-
-% Search
-iCountry = find(strcmp(dataset.Properties.RowNames, country));
-isCountry = isNormed(iCountry, :);
 
 %% Display
 
@@ -42,8 +40,8 @@ tab.Properties.RowNames = index;
 
 % Display
 disp(tab);
-disp(isCountry);
+disp(isNormed(iCountry, :));
 
 %% Clear workspace
 
-clearvars -except dataset index stats isNormed isCountry tab;
+clearvars -except dataset index stats isNormed iCountry tab;

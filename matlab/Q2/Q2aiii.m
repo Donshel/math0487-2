@@ -1,50 +1,56 @@
 %% Parameters
 
 n = 20;
-m = 1;
+m = 3;
 f = {};
 g = {'ksdist', 'ks2stat', {}};
 
 %% Calls
 
 loadData;
-pickSamples; sample = sample{1};
+pickSamples;
 
 %% Compute
 
 for i = 1:size(index, 1)
     g{3} = {dataset.(index{i})};
-    temp = feval(g{2}, sample.(index{i}), g{3}{:});
+    temp = zeros(m, 1);
+    for j = 1:m
+        temp(j) = feval(g{2}, sample{j}.(index{i}), g{3}{:});
+    end
     stats.sample.(index{i}).(g{1}) = temp;
 end
 
 %% Plot
 
 for i = 1:size(index, 1)
-    eval(['plot' num2str(i) '= subplot(1, 2,' num2str(i) ');']);
+    % Setup
+    names = fieldnames(stats);
+    legends = {names{1}};
+    for j = 1:m
+        legends{end + 1, 1} = [names{2}, ' ', num2str(j)];
+    end
+    
+    % Plot
+    subplot(1, 2, i);
     cdfplot(dataset.(index{i}));
     hold on
-         cdfplot(sample.(index{i}));
+        for j = 1:m
+            cdfplot(sample{j}.(index{i}));
+        end
     hold off
-    legend(fieldnames(stats));
+    legend(legends);
     ylabel('Cumulated frequency');
     xlabel(index{i});
 end
 
-linkaxes([plot1, plot2], 'y');
-
 %% Display
 
-% Setup
-tab = table;
 for i = 1:size(index, 1)
-    tab(end + 1, :) = stats.sample.(index{i});
+    disp([index{i} ' :']);
+    disp(stats.sample.(index{i}));
 end
-tab.Properties.RowNames = index;
-
-% Display
-disp(tab);
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample tab;
+clearvars -except dataset index stats;

@@ -12,9 +12,11 @@ xlswrite('resultats.xlsx', stats.dataset.(index{2}){1, order}', 'Feuille 1', 'D6
 
 Q1c;
 
-order = {'min', 'max', 'proportion'};
-xlswrite('resultats.xlsx', stats.dataset.(index{1}){1, order}', 'Feuille 1', 'D10:D12');
-xlswrite('resultats.xlsx', stats.dataset.(index{2}){1, order}', 'Feuille 1', 'D13:D15');
+order = {'interval', 'proportion'};
+xlswrite('resultats.xlsx', stats.dataset.(index{1}){1, order{1}}', 'Feuille 1', 'D10:D11');
+xlswrite('resultats.xlsx', stats.dataset.(index{1}){1, order{2}}', 'Feuille 1', 'D12');
+xlswrite('resultats.xlsx', stats.dataset.(index{2}){1, order{1}}', 'Feuille 1', 'D13:D14');
+xlswrite('resultats.xlsx', stats.dataset.(index{2}){1, order{2}}', 'Feuille 1', 'D15');
 
 Q1d;
 
@@ -78,7 +80,7 @@ order = {'gap', 'var'};
 xlswrite('resultats.xlsx', tab.(index{1}){'mean', order}', 'Feuille 1', 'D40:D41');
 xlswrite('resultats.xlsx', tab.(index{1}){'median', order}', 'Feuille 1', 'D42:D43');
 
-Q3di2ii;
+Q3d;
 
 order = {'number'};
 xlswrite('resultats.xlsx', tab.(index{1}){{'student', 'normal'}, order}, 'Feuille 1', 'D44:D45');
@@ -89,7 +91,7 @@ rmpath('../../Q3');
 
 addpath('../../Q4');
 
-Q4a2b;
+Q4;
 
 order = {'Belgium', 'OMS'};
 xlswrite('resultats.xlsx', number.(index{1}){1, order}', 'Feuille 1', 'D46:D47');

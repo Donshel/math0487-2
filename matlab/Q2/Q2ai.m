@@ -1,7 +1,7 @@
 %% Parameters
 
 n = 20;
-m = 1;
+m = 3;
 f = {
     'mean', 'mean', {};
     'median', 'median', {};
@@ -11,20 +11,15 @@ f = {
 %% Calls
 
 loadData;
-pickSamples; sample = sample{1};
+pickSamples;
 
 %% Display
 
-% Setup
-tab = table;
 for i = 1:size(index, 1)
-    tab(end + 1, :) = stats.sample.(index{i});
+    disp([index{i} ' :']);
+    disp(stats.sample.(index{i}));
 end
-tab.Properties.RowNames = index;
-
-% Display
-disp(tab);
 
 %% Clear workspace
 
-clearvars -except dataset index stats sample tab;
+clearvars -except dataset index stats;
