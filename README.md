@@ -15,7 +15,7 @@ Aussi, il peut être nécessaire de nettoyer l'espace de travaille entre l'exéc
 
 ## Auteurs
 
-* **François Rozet** - [Donshel](https://github.com/Donshel)
+* **François Rozet** - [francois-rozet](https://github.com/francois-rozet)
 * **Jean-Baptiste Crismer**
 
 ## Note
